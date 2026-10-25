@@ -1,8 +1,8 @@
-/* أدخل قيم مشروع Supabase هنا لتفعيل المزامنة بين الأجهزة.
- * انسخ Project URL و Publishable key (أو anon public key) من إعدادات مشروعك.
- * لا تضع service_role / secret key هنا مطلقًا.
+/* TradeGlass • Public browser configuration.
+ * Publishable Key is designed for clients; RLS protects private trade rows.
+ * NEVER paste any secret/service_role key into this file.
  */
 window.TRADEGLASS_CONFIG = {
-  supabaseUrl: "",
-  supabasePublishableKey: ""
+  supabaseUrl: "https://beqdnfvajirsqkfmmdqm.supabase.co",
+  supabasePublishableKey: "sb_publishable_NWgFqbICmm_Pc1edwXutSg_g8BQ5kMH"
 };

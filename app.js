@@ -17,6 +17,8 @@
   const isConfigured = /^https:\/\/[a-zA-Z0-9-]+\.supabase\.co\/?$/.test((config.supabaseUrl||'').trim()) && Boolean((config.supabasePublishableKey||'').trim());
   let client=null;
   let session=null;
+  let cloudReady=false;
+  let cloudFailed=false;
   let entries=readGuest();
   let viewYear=new Date().getFullYear();
   let viewMonth=new Date().getMonth();
@@ -78,8 +80,8 @@
     $('activity-list').innerHTML=sorted.length?sorted.map(e=>`<div class="activity-entry"><span class="asset-logo">${esc(e.symbol.substring(0,2).toUpperCase())}</span><div class="activity-info"><b>${esc(e.symbol.toUpperCase())}</b><small>${esc(shortDate(e.trade_date))} · ${e.side==='buy'?'شراء':'بيع'}</small></div><strong class="activity-value ${e.pnl>0?'text-win':e.pnl<0?'text-loss':''}">${money(e.pnl)}</strong></div>`).join(''):'<div class="muted-empty"><span class="empty-icon">✧</span><span>لا توجد صفقات حتى الآن</span><span style="font-size:10px;color:#a4a4a7">أضف أول صفقة وابدأ رحلتك.</span></div>';
   }
   function renderAccount(){
-    $('sync-badge').classList.toggle('online',Boolean(session));
-    $('sync-label').textContent=session?'متصل بالسحابة':isConfigured?'غير مسجل':'محلي فقط';
+    $('sync-badge').classList.toggle('online',Boolean(session && cloudReady));
+    $('sync-label').textContent=session?(cloudFailed?'خطأ في المزامنة':cloudReady?'متصل بالسحابة':'جارٍ المزامنة'):isConfigured?'غير مسجل':'محلي فقط';
     $('account-label').textContent=session?session.user.email?.split('@')[0]||'حسابي':'حسابي';
   }
   function setMonth(delta){const d=new Date(viewYear,viewMonth+delta,1);viewYear=d.getFullYear();viewMonth=d.getMonth();render();}
@@ -162,8 +164,8 @@
     const email=$('auth-email').value.trim(),password=$('auth-password').value;
     const signup=form.dataset.tab==='signup';busy=true;$('submit-auth').disabled=true;$('submit-auth').textContent='جارٍ التحقق...';
     try{
-      if(signup){const {data,error}=await client.auth.signUp({email,password});if(error)throw error;if(data.session){closeModal();notify('تم إنشاء الحساب وتسجيل الدخول ✓');}else{notify('تم إرسال رسالة لتأكيد بريدك. افتح بريدك ثم سجّل الدخول.');openAuth('login');}}
-      else {const {error}=await client.auth.signInWithPassword({email,password});if(error)throw error;closeModal();notify('أهلًا بك! تم ربط حسابك ✓');}
+      if(signup){const {data,error}=await client.auth.signUp({email,password,options:{emailRedirectTo:location.origin+location.pathname}});if(error)throw error;if(data.session){closeModal();notify('تم إنشاء الحساب وتسجيل الدخول ✓');}else{notify('تم إرسال رسالة لتأكيد بريدك. افتح بريدك ثم سجّل الدخول.');openAuth('login');}}
+      else {const {error}=await client.auth.signInWithPassword({email,password});if(error)throw error;closeModal();notify('تم تسجيل الدخول، جارٍ تحميل صفقاتك...');}
     }catch(e){notify(friendlyError(e),true);}finally{busy=false;if($('submit-auth')){$('submit-auth').disabled=false;$('submit-auth').textContent=signup?'إنشاء الحساب':'تسجيل الدخول';}}
   }
   async function resetPassword(){const email=$('auth-email')?.value.trim();if(!email){notify('أدخل بريدك الإلكتروني أولًا.',true);return;}try{const {error}=await client.auth.resetPasswordForEmail(email,{redirectTo:location.origin+location.pathname});if(error)throw error;notify('تم إرسال رابط استعادة كلمة المرور إلى بريدك.');}catch(e){notify(friendlyError(e),true);}}
@@ -179,11 +181,11 @@
         received.push(...(data||[]));
         if(!data || data.length<pageSize)break;
       }
-      entries=received.map(cleanEntry);render();if(!silent)notify('تم تحديث بياناتك من السحابة ✓');
+      entries=received.map(cleanEntry);cloudReady=true;cloudFailed=false;render();if(!silent)notify('تم تحديث بياناتك من السحابة ✓');
     }
-    catch(e){if(!silent)notify('تعذرت المزامنة: '+friendlyError(e),true);else notify('تعذرت المزامنة السحابية. تحقق من الإعدادات.',true);}
+    catch(e){cloudReady=false;cloudFailed=true;render();notify('تعذرت المزامنة: '+friendlyError(e),true);}
   }
-  async function sessionChanged(next){const oldId=session?.user.id;const newId=next?.user.id;session=next;if(oldId!==newId){entries=next?[]:readGuest();render();if(next)await cloudRefresh(true);}else render();}
+  async function sessionChanged(next){const oldId=session?.user.id;const newId=next?.user.id;session=next;if(oldId!==newId){cloudReady=false;cloudFailed=false;entries=next?[]:readGuest();render();if(next)await cloudRefresh(true);}else render();}
   async function importGuest(){
     const guest=readGuest();if(!guest.length)return notify('لا توجد صفقات محلية لنقلها.');
     if(!session)return;
@@ -196,7 +198,7 @@
       localStorage.removeItem('tradeglass_guest_entries');await cloudRefresh(true);openSettings();notify('تم نقل الصفقات المحلية إلى السحابة ✓');
     }catch(e){notify('لم يكتمل النقل؛ احتفظنا بالبيانات المحلية. راجع حسابك قبل المحاولة مجددًا.',true);}
   }
-  function csvCell(x){let s=String(x??'');if(/^[=+@]/.test(s))s="'"+s;return '"'+s.replace(/"/g,'""')+'"';}
+  function csvCell(x){let s=String(x??'');if(/^[\s]*[=+@-]/.test(s))s="'"+s;return '"'+s.replace(/"/g,'""')+'"';}
   function exportCSV(){
     const header=['Date','Symbol','Side','PnL_USD','Notes'];
     const rows=[header,...entries.map(e=>[e.trade_date,e.symbol,e.side,e.pnl.toFixed(2),e.notes])];

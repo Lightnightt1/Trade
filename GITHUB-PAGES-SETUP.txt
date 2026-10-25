@@ -1,2 +1,22 @@
-GitHub Pages: Create a public repository; upload all files from this folder DIRECTLY to the repository root (not a nested TradeGlass folder). Settings > Pages > Deploy from a branch > main > /(root) > Save. Then visit https://USERNAME.github.io/REPO/
-Cloud synchronization requires configuring Supabase in config.js and schema.sql. Do not place a secret key in public files.
+TRADEGLASS / GITHUB PAGES (YOUR LIVE URL)
+
+Your site: https://nizarkhalid2.github.io/Trade/
+Repository: https://github.com/nizarkhalid2/Trade
+
+1) IMPORTANT: Run schema.sql in your Supabase project SQL Editor FIRST.
+   Link: https://supabase.com/dashboard/project/beqdnfvajirsqkfmmdqm/sql
+2) In Supabase Authentication > URL Configuration set:
+   Site URL = https://nizarkhalid2.github.io/Trade/
+   Additional Redirect URL = https://nizarkhalid2.github.io/Trade/
+   In Authentication > Providers > Email enable email/password sign-in.
+3) On GitHub repository https://github.com/nizarkhalid2/Trade, upload all files
+   in this folder directly to the repo ROOT, replacing files with matching names.
+   (Add file > Upload files > Commit changes). Do not upload the containing folder.
+4) Open https://nizarkhalid2.github.io/Trade/ and refresh. If you see an older
+   version, hard-reload or close/reopen tab.
+5) Click ACCOUNT > Create account. Confirm your email if prompted, then login.
+6) Add a trade. Open the same site on a second phone and login with the same account.
+7) If you had local trades, use Settings > Transfer to cloud after login.
+
+NEVER publish a Secret Key, service_role key, password, or private account tokens.
+Only the Publishable Key is included in config.js. RLS in schema.sql is REQUIRED.
