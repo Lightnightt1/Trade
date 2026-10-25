@@ -1,0 +1,140 @@
+/* TradeGlass · MONO GLASS · v2
+   Neutral UI only. Green/red are reserved for realized trading P&L. */
+:root {
+  color-scheme: dark;
+  --bg: #070708;
+  --surface: rgba(35,35,37,.52);
+  --border: rgba(255,255,255,.145);
+  --line: rgba(255,255,255,.085);
+  --muted: #9a9a9f;
+  --text: #f6f6f7;
+  --green: #44e1a4;
+  --red: #ff7388;
+  --violet: #e8e8ea;
+  --blue: #e8e8ea;
+}
+body {
+  background-color:var(--bg);
+  background-image:
+    radial-gradient(ellipse 700px 560px at 90% -5%, rgba(255,255,255,.105) 0%, transparent 75%),
+    radial-gradient(ellipse 460px 550px at 2% 57%, rgba(255,255,255,.06) 0%, transparent 78%),
+    radial-gradient(ellipse 470px 440px at 90% 99%, rgba(170,170,170,.035), transparent 72%),
+    linear-gradient(#080809, #0b0b0d 54%, #060606);
+  background-attachment:fixed;
+}
+.ambient-1 {right:-210px;top:-250px;width:720px;height:680px;background:rgba(220,220,220,.125);filter:blur(116px)}
+.ambient-2 {left:-210px;top:420px;width:510px;height:650px;background:rgba(170,170,175,.09);filter:blur(116px)}
+.noise {opacity:.12;background-size:7px 7px}
+.glass {
+  background:linear-gradient(137deg,rgba(255,255,255,.13) 0%,rgba(255,255,255,.065) 9%,rgba(54,54,57,.38) 35%,rgba(25,25,27,.58) 75%,rgba(11,11,12,.64) 100%);
+  border:1px solid rgba(255,255,255,.17);
+  box-shadow:0 24px 65px rgba(0,0,0,.27),inset 0 1px 0 rgba(255,255,255,.21),inset 1px 0 0 rgba(255,255,255,.065),inset 0 -1px 0 rgba(255,255,255,.018);
+  backdrop-filter:blur(38px) saturate(110%);
+  -webkit-backdrop-filter:blur(38px) saturate(110%);
+}
+.topbar {border-bottom-color:rgba(255,255,255,.11)}
+.brand-mark {
+  color:#f7f7f8;
+  background:linear-gradient(150deg,rgba(255,255,255,.23),rgba(255,255,255,.055) 55%,rgba(30,30,30,.44));
+  border:1px solid rgba(255,255,255,.26);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.28),0 12px 25px #0005;
+}
+.brand-copy strong span {color:#bdbdbf}
+.brand-copy small {color:#949498}
+.sync-badge {color:#c8c8cc;border-color:rgba(255,255,255,.15);background:rgba(255,255,255,.05)}
+.signal-dot {background:#a0a0a3;box-shadow:0 0 8px rgba(255,255,255,.2)}
+.sync-badge.online {color:#f4f4f4}
+.sync-badge.online .signal-dot {background:#f4f4f4;box-shadow:0 0 13px rgba(255,255,255,.58)}
+.icon-btn,.control-button {color:#ededee;background:rgba(255,255,255,.055);border-color:rgba(255,255,255,.13)}
+.icon-btn:hover,.control-button:hover,.today-button:hover {background:rgba(255,255,255,.15);border-color:rgba(255,255,255,.38)}
+.user-pill {background:rgba(255,255,255,.065);color:#f4f4f5}
+.user-avatar {background:linear-gradient(155deg,#d5d5d8,#67676b);color:#101013;border:1px solid #fff4}
+.eyebrow,.section-kicker {color:#aeaeaf}
+.eyebrow-line {background:linear-gradient(90deg,transparent,#ededed)}
+.hero h1 em {
+  background:linear-gradient(100deg,#fff 5%,#c4c4c6 65%,#7d7d81);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.hero p {color:#b1b1b5}
+.primary-btn {
+  color:#151517;
+  border:1px solid rgba(255,255,255,.92);
+  background:linear-gradient(125deg,#fff 0%,#e0e0e3 52%,#bababe 100%);
+  box-shadow:0 12px 34px rgba(220,220,220,.115),inset 0 1px 0 #fff;
+}
+.primary-btn:hover {filter:brightness(1.09);box-shadow:0 12px 38px rgba(230,230,230,.21)}
+.stat-top {color:#b3b3b7}
+.stat-icon.purple,.stat-icon.green,.stat-icon.blue {color:#e6e6e8;background:rgba(255,255,255,.085);border:1px solid rgba(255,255,255,.075)}
+.stat-value small {color:#b6b6b9}
+.stat-foot {color:#96969b}
+.panel-head h2,.insight-head h3,.activity-head h3 {color:#fff}
+.month-title {color:#f7f7f7}
+.today-button {color:#e3e3e5;border-color:rgba(255,255,255,.22);background:rgba(255,255,255,.072)}
+.weekday-row span {color:#aaaab0}
+.day-cell {
+  background:linear-gradient(155deg,rgba(255,255,255,.055),rgba(255,255,255,.018));
+  border:1px solid rgba(255,255,255,.08);
+  color:#f3f3f4;
+}
+.day-cell:not(:disabled):hover {border-color:rgba(255,255,255,.56);background:rgba(255,255,255,.095)}
+.day-cell .day-count {color:#b2b2b4}
+.day-cell.outside {opacity:.23}
+.day-cell.current .day-number {color:#101011;background:#fff;box-shadow:0 0 17px #ffffff3a}
+.day-cell.won {
+  background:linear-gradient(148deg,rgba(53,201,142,.20),rgba(26,80,59,.105) 67%,rgba(255,255,255,.028));
+  border-color:rgba(68,225,164,.30);
+  box-shadow:inset 0 1px 0 rgba(68,225,164,.11);
+}
+.day-cell.lost {
+  background:linear-gradient(148deg,rgba(235,66,99,.20),rgba(90,33,47,.10) 67%,rgba(255,255,255,.028));
+  border-color:rgba(255,115,136,.29);
+  box-shadow:inset 0 1px 0 rgba(255,115,136,.10);
+}
+.day-cell.won .day-money,.text-win,.insight-row .text-win {color:var(--green)!important}
+.day-cell.lost .day-money,.text-loss,.insight-row .text-loss {color:var(--red)!important}
+.day-cell.flat {background:rgba(255,255,255,.065)}
+.legend-dot.flat {background:#9c9c9e}
+.legend span {color:#b5b5b8}
+.calendar-tip {color:#96969a}
+.mini-mark,.empty-icon,.muted-empty .empty-icon,.privacy-icon,.footer-spark {color:#bdbdc1}
+.chart-container:before {opacity:.8}
+.chart-bar {background:linear-gradient(to top,#218969,#58efb6);box-shadow:0 0 10px rgba(68,225,164,.12)}
+.chart-bar.negative {background:linear-gradient(to top,#b9445f,#ff8a9e);box-shadow:0 0 10px rgba(255,115,136,.13)}
+.chart-bar.zero {background:#77777b;box-shadow:none}
+.chart-note {color:#a0a0a5}
+.insight-row {color:#b4b4b8}
+.insight-row strong {color:#eeeef0}
+.activity-count {color:#eeeeef;background:rgba(255,255,255,.09);border-color:rgba(255,255,255,.16)}
+.asset-logo {color:#f4f4f4;background:rgba(255,255,255,.075);border-color:rgba(255,255,255,.14)}
+.activity-info small {color:#9d9da2}
+.muted-empty,.privacy-note {color:#a5a5a9}
+.page-footer {color:#929296}
+.modal-scrim {background:rgba(0,0,0,.75);backdrop-filter:blur(15px);-webkit-backdrop-filter:blur(15px)}
+.modal-card {
+  background:linear-gradient(146deg,rgba(67,67,69,.91),rgba(25,25,27,.96) 46%,rgba(12,12,13,.97));
+  box-shadow:0 30px 100px rgba(0,0,0,.75),inset 0 1px rgba(255,255,255,.24);
+}
+.x-close,.small-action {color:#e5e5e5;background:rgba(255,255,255,.07)}
+.modal-subtitle,.help-text {color:#b2b2b5}
+.field label {color:#ededee}
+.field input,.field textarea,.field select {color:#fff;background:rgba(7,7,8,.45);border-color:rgba(255,255,255,.15)}
+.field input:focus,.field textarea:focus,.field select:focus {border-color:rgba(255,255,255,.7);box-shadow:0 0 0 3px #ffffff10}
+.field input::placeholder,.field textarea::placeholder {color:#8a8a8e}
+.outcome-button {background:rgba(255,255,255,.055);color:#dddde0;border-color:rgba(255,255,255,.15)}
+.outcome-button.active.win {color:var(--green);background:rgba(68,225,164,.16);border-color:rgba(68,225,164,.5)}
+.outcome-button.active.loss {color:var(--red);background:rgba(255,115,136,.16);border-color:rgba(255,115,136,.5)}
+.secondary-btn {color:#fafafa;background:rgba(255,255,255,.11);border-color:rgba(255,255,255,.23)}
+.danger-btn {color:#fff;background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.28)}
+.day-summary {background:rgba(255,255,255,.065);border-color:rgba(255,255,255,.14)}
+.day-summary small {color:#bbb}
+.auth-tabs {background:rgba(255,255,255,.06)}
+.auth-tabs button {color:#aaa}
+.auth-tabs button.active {color:#fff;background:rgba(255,255,255,.20);box-shadow:inset 0 1px #ffffff30}
+.setting-row small {color:#a6a6a8}
+.notice {color:#d7d7d9;background:rgba(255,255,255,.065);border-color:rgba(255,255,255,.17)}
+.notice.warn {background:rgba(255,255,255,.055);border-color:rgba(255,255,255,.24)}
+.toast {color:#fff;background:rgba(38,38,40,.94);border-color:rgba(255,255,255,.4);backdrop-filter:blur(22px)}
+.toast.error {color:#fff;background:#39393b;border-color:rgba(255,255,255,.35)}
+.connected-state {color:#f4f4f5}
+button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible {outline-color:#eee}
+/* Trade P&L feedback keeps the only vivid accents, including the chart candles. */

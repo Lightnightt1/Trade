@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#080809" />
+  <meta name="description" content="TradeGlass — دفتر تداول ذكي وتقويم أرباحك وخسائرك. تسجيل يومي ومزامنة آمنة عبر الأجهزة." />
+  <link rel="manifest" href="./manifest.webmanifest" />
+  <link rel="icon" type="image/png" href="./icon-192.png" />
+  <link rel="apple-touch-icon" href="./apple-touch-icon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="./styles.css" />
+  <link rel="stylesheet" href="./theme-monochrome.css" />
+  <script src="./config.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
+  <script src="./app.js" defer></script>
+</head>
+<body>
+  <div class="ambient ambient-1"></div><div class="ambient ambient-2"></div><div class="noise"></div>
+  <div class="app-wrap">
+    <header class="topbar">
+      <a class="brand" href="./" aria-label="TradeGlass الرئيسية">
+        <span class="brand-mark"><svg viewBox="0 0 32 32" fill="none" aria-hidden="true"><path d="M6 22.5L12.5 15L17.5 19L26 8" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M19.5 8H26V14.5" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        <span class="brand-copy"><strong>Trade<span>Glass</span></strong><small>YOUR TRADING JOURNAL</small></span>
+      </a>
+      <div class="top-actions">
+        <span class="sync-badge" id="sync-badge"><i class="signal-dot"></i><span id="sync-label">وضع محلي</span></span>
+        <button class="icon-btn" id="sync-now-btn" title="تحديث البيانات" aria-label="تحديث البيانات"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20 7v5h-5M4 17v-5h5" stroke-linecap="round" stroke-linejoin="round"/><path d="M5.5 9A7 7 0 0 1 18 7l2 5M4 12l2 5a7 7 0 0 0 12.5-2" stroke-linecap="round"/></svg></button>
+        <button class="icon-btn" id="settings-btn" title="الإعدادات" aria-label="الإعدادات"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 15.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Z"/><path d="M19 13.8a7.8 7.8 0 0 0 0-3.6l2-1.5-2-3.4-2.35.95a8 8 0 0 0-3.1-1.8L13.2 2h-4l-.35 2.45a8 8 0 0 0-3.1 1.8L3.4 5.3l-2 3.4 2 1.5a7.8 7.8 0 0 0 0 3.6l-2 1.5 2 3.4 2.35-.95a8 8 0 0 0 3.1 1.8L9.2 22h4l.35-2.45a8 8 0 0 0 3.1-1.8l2.35.95 2-3.4-2-1.5Z" transform="translate(0.8 0) scale(.94)" stroke-linejoin="round"/></svg></button>
+        <button class="user-pill" id="account-btn"><span class="user-avatar">TG</span><span id="account-label">حسابي</span></button>
+      </div>
+    </header>
+
+    <main>
+      <div class="hero">
+        <div class="hero-copy"><span class="eyebrow"><span class="eyebrow-line"></span> PERFORMANCE OVER TIME</span><h1>كل صفقة <em>تحكي قصة.</em></h1><p>راقب تطورك يومًا بيوم. نتائجك، صفقاتك، وأهدافك — في مكان واحد.</p></div>
+        <button class="primary-btn hero-add" id="add-trade-btn"><span class="plus-icon">＋</span> إضافة صفقة جديدة</button>
+      </div>
+
+      <section class="stats-grid" aria-label="إحصائيات الشهر">
+        <div class="stat-card glass"><div class="stat-top"><span>صافي الربح والخسارة</span><span class="stat-icon purple">↗</span></div><div class="stat-value numeric" id="stat-net" dir="ltr">$0.00</div><div class="stat-foot" id="stat-net-caption">خلال الشهر الحالي</div></div>
+        <div class="stat-card glass"><div class="stat-top"><span>الأيام الرابحة</span><span class="stat-icon green">✦</span></div><div class="stat-value numeric" id="stat-win-days" dir="ltr">0 <small>يوم</small></div><div class="stat-foot" id="stat-win-caption">من أصل 0 يوم تداول</div></div>
+        <div class="stat-card glass"><div class="stat-top"><span>نسبة الصفقات الرابحة</span><span class="stat-icon blue">◈</span></div><div class="stat-value numeric" id="stat-winrate" dir="ltr">0<small>%</small></div><div class="stat-foot" id="stat-winrate-caption">0 صفقات هذا الشهر</div></div>
+      </section>
+
+      <div class="dashboard">
+        <section class="calendar-panel glass">
+          <div class="panel-head"><div><span class="section-kicker">MONTHLY OVERVIEW</span><h2>تقويم الأداء</h2></div><div class="month-controls"><button class="control-button" id="next-month" aria-label="الشهر التالي">‹</button><div class="month-title" id="month-title"></div><button class="control-button" id="prev-month" aria-label="الشهر السابق">›</button><button class="today-button" id="today-btn">اليوم</button></div></div>
+          <div class="weekday-row"><span>الأحد</span><span>الاثنين</span><span>الثلاثاء</span><span>الأربعاء</span><span>الخميس</span><span>الجمعة</span><span>السبت</span></div>
+          <div id="calendar" class="calendar-grid" role="grid" aria-label="تقويم الأرباح والخسائر"></div>
+          <div class="calendar-footer"><div class="legend"><span><i class="legend-dot win"></i> ربح</span><span><i class="legend-dot loss"></i> خسارة</span><span><i class="legend-dot flat"></i> تعادل</span></div><span class="calendar-tip">اضغط على أي يوم لعرض صفقاتك</span></div>
+        </section>
+        <aside class="insight-column">
+          <section class="insight-card glass"><div class="insight-head"><div><span class="section-kicker">PERFORMANCE</span><h3>نظرة على الشهر</h3></div><span class="mini-mark">⌁</span></div><div class="chart-container" id="chart" aria-label="الأداء اليومي"></div><div class="horizontal-divider"></div><div class="insight-row"><span>إجمالي الأرباح</span><strong class="numeric text-win" id="gross-wins" dir="ltr">+$0.00</strong></div><div class="insight-row"><span>إجمالي الخسائر</span><strong class="numeric text-loss" id="gross-losses" dir="ltr">-$0.00</strong></div><div class="insight-row emphasized"><span>أفضل يوم</span><strong class="numeric" id="best-day" dir="ltr">—</strong></div></section>
+          <section class="activity-card glass"><div class="activity-head"><div><span class="section-kicker">RECENT ACTIVITY</span><h3>آخر الصفقات</h3></div><span class="activity-count" id="activity-count">0</span></div><div class="activity-list" id="activity-list"></div></section>
+          <div class="privacy-note"><span class="privacy-icon">✧</span><span>كل الأرقام بالدولار الأمريكي (USD). لا يتم استيراد أي تداولات تلقائيًا.</span></div>
+        </aside>
+      </div>
+      <footer class="page-footer"><span>TradeGlass <span class="footer-spark">✧</span> Trading journal</span><span>اجعل كل يوم فرصة للتعلّم.</span></footer>
+    </main>
+  </div>
+
+  <div id="modal-layer" class="modal-layer hidden" aria-hidden="true">
+    <div class="modal-scrim" data-close="1"></div>
+    <section id="modal-card" class="modal-card glass" role="dialog" aria-modal="true" aria-labelledby="modal-heading"><div id="modal-content"></div></section>
+  </div>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+</body>
+</html>

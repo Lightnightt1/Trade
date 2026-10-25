@@ -1,0 +1,2 @@
+GitHub Pages: Create a public repository; upload all files from this folder DIRECTLY to the repository root (not a nested TradeGlass folder). Settings > Pages > Deploy from a branch > main > /(root) > Save. Then visit https://USERNAME.github.io/REPO/
+Cloud synchronization requires configuring Supabase in config.js and schema.sql. Do not place a secret key in public files.
